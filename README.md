@@ -1,36 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏠 Quản Lý Phòng Trọ
 
-## Getting Started
+> Hệ thống quản lý phòng trọ toàn diện — Next.js 16 + Prisma + Tailwind CSS
 
-First, run the development server:
+[![Deploy](https://img.shields.io/badge/Deploy-Vercel-000?logo=vercel)](https://retal-management-bo69dssk0-ewings.vercel.app)
+[![Next.js](https://img.shields.io/badge/Next.js-16.2-000?logo=next.js)](https://nextjs.org)
+[![Database](https://img.shields.io/badge/DB-PostgreSQL-4169E1?logo=postgresql)](https://neon.tech)
+
+---
+
+## ✨ Tính năng
+
+| Module | Chức năng chính |
+|--------|----------------|
+| 📊 Dashboard | Tổng quan, alerts, biểu đồ doanh thu |
+| 🏠 Phòng trọ | CRUD, quản lý trạng thái, tiện ích |
+| 👤 Khách thuê | CRUD, lịch sử thuê trọ, tìm kiếm |
+| 📝 Hợp đồng | Tạo, gia hạn, chấm dứt, hoàn cọc |
+| 🧾 Hóa đơn | Tạo hàng loạt/cá nhân, điện/nước/internet/rác |
+| 💰 Thanh toán | Ghi nhận, tự động cập nhật trạng thái |
+| ⚡ Chỉ số | Nhập chỉ số cũ/mới, tự tính tiêu thụ |
+| 🔧 Bảo trì | Tạo yêu cầu, theo dõi tiến độ |
+| 📈 Báo cáo | Biểu đồ doanh thu, thống kê theo tháng, export CSV |
+| 👥 Người dùng | Phân quyền Admin / Staff / Tenant |
+
+## 🛡️ Phân quyền
+
+| Tính năng | 🛡️ Admin | 👤 Staff | 🏠 Tenant |
+|-----------|-----------|----------|-----------|
+| Dashboard | ✅ | ✅ | ❌ |
+| Phòng của tôi | ❌ | ❌ | ✅ |
+| Quản lý phòng/khách/HĐ | ✅ Xóa | ✅ Sửa | ❌ |
+| Quản lý người dùng | ✅ | ❌ | ❌ |
+| Export CSV | ✅ | ❌ | ❌ |
+
+## 🚀 Quick Start
 
 ```bash
+# Clone
+git clone https://github.com/baohv/retalManagement.git
+cd quan-ly-phong-tro
+
+# Install
+npm install
+
+# Setup DB + seed
+bash scripts/setup.sh
+
+# Dev
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# → http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🗄️ Công nghệ
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Layer | Công nghệ |
+|-------|-----------|
+| Framework | Next.js 16.2 (App Router) |
+| Database | SQLite (dev) / PostgreSQL (prod) |
+| ORM | Prisma 6 |
+| UI | Tailwind CSS + Outfit font |
+| Auth | HMAC-signed session cookies |
+| Charts | Recharts |
+| E2E Tests | Playwright |
+| Deploy | Vercel |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🌐 Deploy
 
-## Learn More
+### Production (Vercel)
+```bash
+# Push lên GitHub → import vào Vercel
+# Cần PostgreSQL (Neon) cho production
+cp prisma/schema.postgres.prisma prisma/schema.prisma
+npx prisma db push
+npx prisma generate
+node prisma/seed.js
+```
 
-To learn more about Next.js, take a look at the following resources:
+### URL
+- **Production:** https://retal-management-bo69dssk0-ewings.vercel.app
+- **Default login:** `admin@example.com` / `admin123`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📁 Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/
+│   ├── (app)/          # 22 pages (authenticated)
+│   ├── login/          # Đăng nhập
+│   ├── register/       # Đăng ký
+│   ├── forgot-password/
+│   └── api/            # 15 API routes
+├── components/         # 7 shared components
+└── lib/                # 8 modules (auth, prisma, permissions...)
+prisma/schema.prisma    # 10 database models
+```
 
-## Deploy on Vercel
+## 📐 BMAD Method
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Dự án được phát triển theo phương pháp BMAD:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Phase | Artifact | Status |
+|-------|----------|--------|
+| Planning | PRD, UX Design | ✅ |
+| Solutioning | Architecture, Epics | ✅ |
+| Implementation | Sprint 1 (34/34 pages) | ✅ |
+| Testing | 6/6 E2E tests | ✅ |
+| Deploy | Vercel + Neon | ✅ |
+
+## 📄 License
+
+MIT
