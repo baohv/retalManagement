@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Outfit } from 'next/font/google'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 
 const outfit = Outfit({
@@ -36,7 +37,10 @@ export default function RootLayout({
     <html lang="vi" className={`${outfit.variable}`}>
       <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192.png" />
       <link rel="mask-icon" href="/icons/icon-192.png" color="#1e40af" />
-      <body className="min-h-screen bg-gray-50 font-sans">{children}</body>
+      <body className="min-h-screen bg-gray-50 font-sans">
+        {children}
+        <SpeedInsights />
+      </body>
     </html>
   )
 }
