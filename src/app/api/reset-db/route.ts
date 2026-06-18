@@ -95,9 +95,14 @@ async function seedDatabase() {
 
 export async function POST(request: Request) {
   try {
-    // Check secret token to prevent abuse
+    // Only run on Vercel production
+    if (process.env.NODE_ENV !== 'production') {
+      return NextResponse.json({ error: 'Only available in production' }, { status: 403 })
+    }
+    // Check Vercel cron header or secret token
+    const isVercelCron = request.headers.get('x-vercel-cron') === '1'
     const auth = request.headers.get('authorization')
-    if (auth !== `Bearer ${RESET_SECRET}`) {
+    if (!isVercelCron && auth !== `Bearer ${RESET_SECRET}`) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
